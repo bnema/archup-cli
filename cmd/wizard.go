@@ -25,15 +25,13 @@ This wizard installs Tier 2 (Desktop Foundation) and Tier 3 (Compositor + Apps).
 		logger.Info("Starting ArchUp Desktop Wizard")
 
 		// TODO: Launch Bubbletea TUI
-		fmt.Println("🚧 Wizard implementation coming soon!")
+		fmt.Println("Wizard implementation coming soon!")
 		fmt.Println("")
 		fmt.Println("The wizard will:")
 		fmt.Println("  1. Detect your hardware")
 		fmt.Println("  2. Let you choose a compositor")
 		fmt.Println("  3. Select applications to install")
 		fmt.Println("  4. Install and configure everything")
-		fmt.Println("")
-		fmt.Println("Stay tuned! 🚀")
 	},
 }
 
