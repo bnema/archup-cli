@@ -1,0 +1,3 @@
+[submodule "vendor/omarchy"]
+	path = vendor/omarchy
+	url = https://github.com/basecamp/omarchy.git
