@@ -22,7 +22,7 @@ The binary will be installed to $GOBIN (or $GOPATH/bin or ~/go/bin).`,
 		logger.Info("Updating archup-cli to latest version...")
 
 		ctx := context.Background()
-		output, err := command.Run(ctx, "go", "install", "github.com/bnema/archup-cli@latest")
+		output, err := command.Run(ctx, command.Go, command.GoInstall, command.ArchupCLILatest)
 
 		if err != nil {
 			logger.Error("Update failed", "error", err)
