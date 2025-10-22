@@ -16,14 +16,21 @@ func Run(ctx context.Context, name string, args ...string) (string, error) {
 
 	cmd := exec.CommandContext(ctx, name, args...)
 	output, err := cmd.CombinedOutput()
+	outputStr := strings.TrimSpace(string(output))
 
 	if err != nil {
 		logger.Error("Command failed", "cmd", cmdStr, "error", err)
-		return string(output), err
+		if outputStr != "" {
+			logger.Debug("Command output", "output", outputStr)
+		}
+		return outputStr, err
 	}
 
 	logger.Debug("Command succeeded", "cmd", cmdStr)
-	return string(output), nil
+	if outputStr != "" {
+		logger.Debug("Command output", "output", outputStr)
+	}
+	return outputStr, nil
 }
 
 // MustRun executes a command and panics on error

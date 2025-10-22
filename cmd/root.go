@@ -37,7 +37,14 @@ Example:
   archup --debug wizard  # Run with debug logging`,
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		// Initialize logger
-		logger.Init(Debug)
+		if err := logger.Init(Debug); err != nil {
+			// Non-fatal, just print to stderr
+			os.Stderr.WriteString("Warning: could not initialize log file: " + err.Error() + "\n")
+		}
+	},
+	PersistentPostRun: func(cmd *cobra.Command, args []string) {
+		// Close log file
+		logger.Close()
 	},
 }
 
