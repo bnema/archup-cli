@@ -10,6 +10,93 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
+// ListItem represents an item in a simple list
+type ListItem struct {
+	Title       string
+	Description string
+}
+
+// ListModel is a simple list component for selection
+type ListModel struct {
+	items         []ListItem
+	selectedIndex int
+}
+
+// NewListModel creates a new list model
+func NewListModel(items []ListItem) ListModel {
+	return ListModel{
+		items:         items,
+		selectedIndex: 0,
+	}
+}
+
+// Update handles list navigation
+func (m ListModel) Update(msg tea.Msg) (ListModel, tea.Cmd) {
+	switch msg := msg.(type) {
+	case tea.KeyMsg:
+		switch msg.String() {
+		case "up", "k":
+			if m.selectedIndex > 0 {
+				m.selectedIndex--
+			}
+		case "down", "j":
+			if m.selectedIndex < len(m.items)-1 {
+				m.selectedIndex++
+			}
+		}
+	}
+	return m, nil
+}
+
+// View renders the list
+func (m ListModel) View() string {
+	var lines []string
+	for i, item := range m.items {
+		if i == m.selectedIndex {
+			// Selected item
+			title := lipgloss.NewStyle().
+				Foreground(lipgloss.Color(theme.BrightCyan)).
+				Bold(true).
+				Render("▶ " + item.Title)
+			desc := lipgloss.NewStyle().
+				Foreground(lipgloss.Color(theme.PrimaryText)).
+				Render("  " + item.Description)
+			lines = append(lines, title)
+			lines = append(lines, desc)
+		} else {
+			// Unselected item
+			title := lipgloss.NewStyle().
+				Foreground(lipgloss.Color(theme.PrimaryText)).
+				Render("  " + item.Title)
+			desc := lipgloss.NewStyle().
+				Foreground(lipgloss.Color(theme.DimmedText)).
+				Render("  " + item.Description)
+			lines = append(lines, title)
+			lines = append(lines, desc)
+		}
+		// Add spacing between items
+		if i < len(m.items)-1 {
+			lines = append(lines, "")
+		}
+	}
+	return lipgloss.JoinVertical(lipgloss.Left, lines...)
+}
+
+// SelectedItem returns the currently selected item
+func (m ListModel) SelectedItem() ListItem {
+	if m.selectedIndex >= 0 && m.selectedIndex < len(m.items) {
+		return m.items[m.selectedIndex]
+	}
+	return ListItem{}
+}
+
+// SelectIndex sets the selected index
+func (m *ListModel) SelectIndex(index int) {
+	if index >= 0 && index < len(m.items) {
+		m.selectedIndex = index
+	}
+}
+
 // BleuDelegate is a custom list delegate styled with Bleu theme
 type BleuDelegate struct {
 	height  int
