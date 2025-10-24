@@ -39,12 +39,12 @@ Example:
 		// Initialize logger
 		if err := logger.Init(Debug); err != nil {
 			// Non-fatal, just print to stderr
-			os.Stderr.WriteString("Warning: could not initialize log file: " + err.Error() + "\n")
+			_, _ = os.Stderr.WriteString("Warning: could not initialize log file: " + err.Error() + "\n")
 		}
 	},
 	PersistentPostRun: func(cmd *cobra.Command, args []string) {
 		// Close log file
-		logger.Close()
+		_ = logger.Close()
 	},
 }
 
