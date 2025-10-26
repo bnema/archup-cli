@@ -1,0 +1,21 @@
+[Unit]
+Description=Hyprland's idle daemon (WM-agnostic)
+Documentation=https://wiki.hyprland.org/Hypr-Ecosystem/hypridle
+PartOf=graphical-session.target
+After=graphical-session.target
+ConditionEnvironment=WAYLAND_DISPLAY
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/hypridle -v
+Restart=on-failure
+RestartSec=5
+
+# Security hardening
+PrivateTmp=yes
+NoNewPrivileges=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+
+[Install]
+WantedBy=graphical-session.target

@@ -1,0 +1,34 @@
+# Hypridle Configuration - Wayland Idle Management
+# Supported WMs: niri, hyprland, sway
+
+# Timeout values (in seconds) - Edit these to customize
+$LOCK_TIMEOUT = 300      # Lock screen (5 min)
+$DPMS_TIMEOUT = 360      # Turn off monitors (6 min)
+$SUSPEND_TIMEOUT = 600   # Suspend system (10 min)
+
+general {
+    lock_cmd = pidof hyprlock || {{IDLE_MANAGER}} lock-screen
+    before_sleep_cmd = {{IDLE_MANAGER}} lock-screen
+    after_sleep_cmd = {{IDLE_MANAGER}} power-on-monitors
+    ignore_dbus_inhibit = false
+    ignore_systemd_inhibit = false
+    inhibit_sleep = 3
+}
+
+listener {
+    timeout = $LOCK_TIMEOUT
+    on-timeout = {{IDLE_MANAGER}} lock-screen
+    on-resume =
+}
+
+listener {
+    timeout = $DPMS_TIMEOUT
+    on-timeout = {{IDLE_MANAGER}} power-off-monitors
+    on-resume = {{IDLE_MANAGER}} restore-brightness
+}
+
+listener {
+    timeout = $SUSPEND_TIMEOUT
+    on-timeout = systemctl suspend
+    on-resume =
+}
